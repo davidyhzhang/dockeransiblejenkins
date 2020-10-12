@@ -1,16 +1,17 @@
 pipeline{
     agent any
     tools {
-      maven 'maven3'
+      maven 'maven'
     }
     environment {
       DOCKER_TAG = getVersion()
+      USER = "davidyhzhang"
     }
     stages{
         stage('SCM'){
             steps{
                 git credentialsId: 'github', 
-                    url: 'https://github.com/javahometech/dockeransiblejenkins'
+                    url: 'https://github.com/davidyhzhang/dockeransiblejenkins'
             }
         }
         
@@ -22,17 +23,17 @@ pipeline{
         
         stage('Docker Build'){
             steps{
-                sh "docker build . -t kammana/hariapp:${DOCKER_TAG} "
+                sh "docker build . -t ${USER}/demo-app:${DOCKER_TAG} "
             }
         }
         
         stage('DockerHub Push'){
             steps{
                 withCredentials([string(credentialsId: 'docker-hub', variable: 'dockerHubPwd')]) {
-                    sh "docker login -u kammana -p ${dockerHubPwd}"
+                    sh "docker login -u ${USER} -p ${dockerHubPwd}"
                 }
                 
-                sh "docker push kammana/hariapp:${DOCKER_TAG} "
+                sh "docker push ${USER}/demo-app:${DOCKER_TAG} "
             }
         }
         
