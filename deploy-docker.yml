@@ -1,5 +1,5 @@
 ---
-- hosts: dev
+- hosts: {{servers}}
   become: True
   tasks:
     - name: Install python pip
@@ -22,7 +22,7 @@
     - name: Start the container
       docker_container:
         name: demo-app
-        image: "davidyhzhang/demo-app:{{DOCKER_TAG}}"
+        image: "{{USER}}/demo-app:{{DOCKER_TAG}}"
         state: started
         published_ports:
           - 0.0.0.0:8080:8080
