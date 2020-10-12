@@ -1,5 +1,5 @@
 ---
-- hosts: {{servers}}
+- hosts: "{{servers}}"
   become: True
   tasks:
     - name: Install python pip
